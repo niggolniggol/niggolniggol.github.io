@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+	<title>Nicole's Stemmer</title>
+	<style>
+	html {font-family: Arial; margin: 0 auto;}
+	/*
+	textarea, #overlap, #overlay, #stemmed{width: 300px; height:150px; overflow-y:scroll; font-family: monospace; font-size: 16px;}
+	#overlap em {font-style:normal; display:inline-block; background:#8f8}
+	h1{margin:0; font-size:1.5em; margin-top:15px}
+	#overlap, #overlay, #stemmed{background:#F8F8F8; padding:5px;}
+	*/
+	textarea, #overlay, #stemmed{width: 300px; height:150px; overflow-y:scroll; font-family: monospace; font-size: 16px; outline: none; resize: none;}
+	h1{margin:0; font-size:1.5em; margin-top:15px}
+	#overlay, #stemmed{background:#F8F8F8; padding:5px;}
+	div {margin: 0; padding: 0;}
+	button:focus {outline:0;}
+	</style>	
+</head>
+<body>
+	
+	<div style="float: left;">
+		<h1>Nicole's Stemmer</h1>
+		<textarea id=test cols=70 rows=15>
+Consideration and greatness will lead to succession.
+		</textarea>
+		<br>
+		<button style="width: 100%; height: 30px; color: #fff; background-color: #000; cursor: pointer; font-size: 12px;" onclick=stem()><strong>STEM!</strong></button>
+	</div>
+	
+	<!--
+	<div style="float: left;">
+		<h1>Overlay</h1>
+		<div id=overlap>Overlayed Output Goes Here!</div>
+	</div>
+	-->
+	<div id="overlap"></div>
+	<div style="float: left;">
+		<h1>Result</h1>
+		<div id=stemmed>Stemmed output here</div>
+	</div>
+	<script src=PorterStemmer1980.js></script>
+	<script>
+	function stem(){
+		var 	wordlist,
+			ix,
+			word,
+			stem,
+			overlap = [],
+			stemmed = [],
+			test = document.getElementById('test').value;
+
+		// dump non-words
+		test = test.replace(/[^\w]/g, ' ');
+
+		// dump multiple white-space
+		test = test.replace(/\s+/g, ' ');
+
+		// split
+		wordlist = test.split(' ');
+
+		for(ix in wordlist) {
+			stem = stemmer(wordlist[ix]);
+			overlap.push(wordlist[ix].replace(stem, stem + '<em>') + '</em>');
+			stemmed.push(stem);
+		}
+		//document.getElementById('overlap').innerHTML = overlap.join(' ');
+		document.getElementById('stemmed').innerHTML = stemmed.join(' ');
+	}
+	/*
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-8759665-4']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	*/
+	</script>
+</body>
+</html>
